@@ -2,25 +2,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      >
+      xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         
+        <h:outputStylesheet library="css" name="style_main.css"  />
     </h:head>
     <h:body>
-        
-        <ui:composition template="/templates/library_template.xhtml">
-
-            <ui:define name="title">
-                #{msg.book_list}
-            </ui:define>
-
-            <ui:define name="content">
-                #{param.genre_id}
-            </ui:define>
-
+        <ui:composition>
+            content222
         </ui:composition>
-        
         
     </h:body>
 </html>
