@@ -14,13 +14,14 @@ import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import ru.alexander.library.beans.Book;
 import ru.alexander.library.db.Database;
 import ru.alexander.library.enums.SearchType;
 
 @ManagedBean(eager = true)
 @SessionScoped
-public class SearchController implements Serializable {
+public class BookListController implements Serializable {
 
     private boolean requestFromPager;
     private int booksOnPage = 2;
@@ -35,7 +36,7 @@ public class SearchController implements Serializable {
     private ArrayList<Book> currentBookList; // текущий список книг для отображения
     private String currentSql;// последний выполнный sql без добавления limit
 
-    public SearchController() {
+    public BookListController() {
         fillBooksAll();
 
         ResourceBundle bundle = ResourceBundle.getBundle("ru.alexander.library.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
@@ -69,8 +70,6 @@ public class SearchController implements Serializable {
 
             }
 
-
-
             if (totalBooksCount > booksOnPage) {
                 sqlBuilder.append(" limit ").append(booksOnPage).append(" OFFSET ").append(selectedPageNumber * booksOnPage - booksOnPage);
             }
@@ -96,7 +95,7 @@ public class SearchController implements Serializable {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BookListController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 if (stmt != null) {
@@ -109,7 +108,7 @@ public class SearchController implements Serializable {
                     conn.close();
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(BookListController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -130,7 +129,7 @@ public class SearchController implements Serializable {
     }
 
     public String fillBooksByGenre() {
-        
+
         imitateLoading();
 
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
@@ -143,8 +142,6 @@ public class SearchController implements Serializable {
                 + "inner join publisher p on b.publisher_id=p.id "
                 + "where genre_id=" + selectedGenreId + " order by b.name ");
 
-
-
         return "books";
     }
 
@@ -154,7 +151,6 @@ public class SearchController implements Serializable {
         selectedLetter = params.get("letter").charAt(0);
 
         submitValues(selectedLetter, 1, -1, false);
-
 
         fillBooksBySQL("select b.id,b.name,b.isbn,b.page_count,b.publish_year, p.name as publisher, a.fio as author, g.name as genre, b.descr, b.image from book b "
                 + "inner join author a on b.author_id=a.id "
@@ -186,10 +182,7 @@ public class SearchController implements Serializable {
             sql.append("where lower(b.name) like '%" + searchString.toLowerCase() + "%' order by b.name ");
         }
 
-
-
         fillBooksBySQL(sql.toString());
-
 
         return "books";
     }
@@ -205,7 +198,6 @@ public class SearchController implements Serializable {
         Statement stmt = null;
         ResultSet rs = null;
         Connection conn = null;
-
 
         byte[] content = null;
         try {
@@ -318,23 +310,29 @@ public class SearchController implements Serializable {
         return letters;
     }
 
-   private void fillPageNumbers(long totalBooksCount, int booksCountOnPage) {
-        
+    public void searchStringChanged(ValueChangeEvent e) {
+        searchString = e.getNewValue().toString();
+    }
+
+    public void searchTypeChanged(ValueChangeEvent e) {
+        searchType = (SearchType) e.getNewValue();
+    }
+
+    private void fillPageNumbers(long totalBooksCount, int booksCountOnPage) {
+
         pageNumbers.clear();
 
-        
-        if (totalBooksCount <= 0 ){
+        if (totalBooksCount <= 0) {
             return;
         }
-        
-        int pageCount = (int)totalBooksCount/booksCountOnPage;
-        
-        int ord = (int)totalBooksCount % booksCountOnPage;
-        
-        if (ord>0){
-            pageCount += 1 ;
+
+        int pageCount = (int) totalBooksCount / booksCountOnPage;
+
+        int ord = (int) totalBooksCount % booksCountOnPage;
+
+        if (ord > 0) {
+            pageCount += 1;
         }
-        
 
         for (int i = 1; i <= pageCount; i++) {
             pageNumbers.add(i);
@@ -413,13 +411,13 @@ public class SearchController implements Serializable {
     public long getSelectedPageNumber() {
         return selectedPageNumber;
     }
-    
+
     private void imitateLoading() {
         try {
             Thread.sleep(1000);// имитация загрузки процесса
         } catch (InterruptedException ex) {
-            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BookListController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
 }

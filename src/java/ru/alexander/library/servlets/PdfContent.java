@@ -11,7 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import ru.alexander.library.controllers.SearchController;
+import ru.alexander.library.controllers.BookListController;
 
 @WebServlet(name = "PdfContent",
 urlPatterns = {"/PdfContent"})
@@ -33,7 +33,7 @@ public class PdfContent extends HttpServlet {
         OutputStream out = response.getOutputStream();
         try {
             int id = Integer.valueOf(request.getParameter("id"));
-            SearchController searchController = (SearchController) request.getSession(false).getAttribute("searchController");
+            BookListController searchController = (BookListController) request.getSession(false).getAttribute("searchController");
             byte[] content = searchController.getContent(id);
             response.setContentLength(content.length);
             out.write(content);
