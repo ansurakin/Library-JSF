@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import ru.alexander.library.controllers.SearchController;
 
-@WebServlet(name = "ShowImage",
-urlPatterns = {"/ShowImage"})
-public class ShowImage extends HttpServlet {
+@WebServlet(name = "PdfContent",
+urlPatterns = {"/PdfContent"})
+public class PdfContent extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -29,14 +29,14 @@ public class ShowImage extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("image/jpeg");
+        response.setContentType("application/pdf");
         OutputStream out = response.getOutputStream();
         try {
             int id = Integer.valueOf(request.getParameter("id"));
             SearchController searchController = (SearchController) request.getSession(false).getAttribute("searchController");
-            byte[] image = searchController.getImage(id);
-            response.setContentLength(image.length);
-            out.write(image);
+            byte[] content = searchController.getContent(id);
+            response.setContentLength(content.length);
+            out.write(content);
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {

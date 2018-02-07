@@ -13,14 +13,6 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>ShowImage</servlet-name>
-        <servlet-class>ru.alexander.library.servlets.ShowImage</servlet-class>
-    </servlet>  
-    <servlet-mapping>
-        <servlet-name>ShowImage</servlet-name>
-        <url-pattern>/ShowImage</url-pattern>
-    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

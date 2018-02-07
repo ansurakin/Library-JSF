@@ -5,7 +5,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-
+        
         <h:outputStylesheet library="css" name="style_main.css"  />
     </h:head>
     <h:body>
@@ -13,12 +13,10 @@
 
             <h4>#{msg.genres}</h4>
 
-
             <h:form styleClass="genres">
                 <ui:repeat value="#{genreController.genreList}" var="g">
 
-
-                    <h:commandLink action="#{searchController.fillBooksByGenre()}" value="#{g.name}">
+                    <h:commandLink action="#{searchController.fillBooksByGenre()}" value="#{g.name}" styleClass="#{g.id == searchController.selectedGenreId ? 'selected_link':''}">
 
                         <f:param name="genre_id" value="#{g.id}" />
 
