@@ -1,4 +1,4 @@
-package ru.alexander.library.beans;
+package ru.alexander.library.controllers;
 
 import java.io.Serializable;
 import java.sql.Connection;
@@ -10,11 +10,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import ru.alexander.library.beans.Genre;
 import ru.alexander.library.db.Database;
 
-@ManagedBean
+@ManagedBean(eager = true)
 @ApplicationScoped
-public class Genres implements Serializable{
+public class GenreController implements Serializable{
 
     private ArrayList<Genre> genreList = new ArrayList<Genre>();
 
@@ -35,7 +36,7 @@ public class Genres implements Serializable{
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Genres.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GenreController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 if (stmt != null) {
@@ -48,7 +49,7 @@ public class Genres implements Serializable{
                     conn.close();
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(Genres.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(GenreController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
