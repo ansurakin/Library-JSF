@@ -130,6 +130,8 @@ public class SearchController implements Serializable {
     }
 
     public String fillBooksByGenre() {
+        
+        imitateLoading();
 
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
@@ -411,4 +413,13 @@ public class SearchController implements Serializable {
     public long getSelectedPageNumber() {
         return selectedPageNumber;
     }
+    
+    private void imitateLoading() {
+        try {
+            Thread.sleep(1000);// имитация загрузки процесса
+        } catch (InterruptedException ex) {
+            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }
