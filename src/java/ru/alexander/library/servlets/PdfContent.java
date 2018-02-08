@@ -6,6 +6,7 @@ package ru.alexander.library.servlets;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,9 +34,15 @@ public class PdfContent extends HttpServlet {
         OutputStream out = response.getOutputStream();
         try {
             int id = Integer.valueOf(request.getParameter("id"));
-            BookListController searchController = (BookListController) request.getSession(false).getAttribute("searchController");
+            Boolean save = Boolean.valueOf(request.getParameter("save"));
+            String filename = request.getParameter("filename");
+            
+            BookListController searchController = (BookListController) request.getSession(false).getAttribute("bookListController");
             byte[] content = searchController.getContent(id);
             response.setContentLength(content.length);
+            if (save) {
+                response.setHeader("Content-Disposition", "attachment;filename="+ URLEncoder.encode(filename,"UTF-8")+".pdf");
+            }
             out.write(content);
         } catch (Exception ex) {
             ex.printStackTrace();
