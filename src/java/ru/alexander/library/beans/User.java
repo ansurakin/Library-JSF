@@ -1,8 +1,15 @@
 package ru.alexander.library.beans;
 
 import java.io.Serializable;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 @ManagedBean
 @SessionScoped
@@ -30,5 +37,47 @@ public class User implements Serializable {
         return password;
     }
     
+    public String login() {
+        try {
+            
+            HttpServletRequest request =  ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest());
+                   
+            if (request.getSession(false)!=null){
+                request.logout();
+            }
+            System.out.println(username + password);
+            request.login(username, password);
+            
+            return "/pages/books.xhtml";
+        } catch (ServletException ex) {
+            ResourceBundle bundle = ResourceBundle.getBundle("ru.alexander.library.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext context = FacesContext.getCurrentInstance();
+            FacesMessage message = new FacesMessage(bundle.getString("login_error"));
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            context.addMessage("login_form", message);
+
+        }
+
+        return "index";
+
+    }
+
+    public String logout() {
+        String result = "/index.xhtml?faces-redirect=true";
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+
+        try {
+            request.logout();
+        } catch (ServletException e) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, e);
+        }
+
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+
+        return result;
+    }
     
 }

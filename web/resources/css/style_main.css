@@ -131,6 +131,9 @@ a:hover, a:active, a:focus {
     width: 85px;
 }
 
+.books_on_page_dropdown{
+    margin-left:30px;
+}
 
 .logo{
     text-align: left;
@@ -226,11 +229,6 @@ a:hover, a:active, a:focus {
     font-weight: bold
 }
 
-.col2 a.content_link img{
-    margin-right: 5px;
-
-}
-
 .col2 a.save_link{
     color: #3333ff;
     font-size: 11px;
@@ -238,7 +236,6 @@ a:hover, a:active, a:focus {
     margin-left: 5px;
     font-weight: bold
 }
-
 
 .col2{
     vertical-align: top;
@@ -338,8 +335,14 @@ a:hover, a:active, a:focus {
 }
 .pager .selected_page{
     color:red;
-    margin-left: 5px;
-    margin-top: 50px;   
+    font-weight: bold;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.pager .page_number{
+    margin-left: 2px;
+    margin-right: 2px;
 }
 
 .ajaxLoading { 
@@ -369,9 +372,6 @@ a:hover, a:active, a:focus {
     height: 40px;
     float:left;
 }
-
-
-
 
 .name_edit{
     width: 100%;

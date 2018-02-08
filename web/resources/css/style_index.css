@@ -9,7 +9,7 @@ body {
 .main {
     background-color: #FFF;
     width: 600px;
-    height:350px;
+    height:390px;
     margin:0 auto;
     padding:20px;
 }
@@ -38,7 +38,7 @@ body {
     border: 1px solid #eaeaea;
     margin: 0 auto;
     padding:10px;
-    height: 100px;
+    height: 140px;
     font-size: 12px;
     font-weight: bold;
 }
@@ -101,9 +101,9 @@ body {
 
 .locales{
     width: 100%;
-    float:left;
+    float:right;
     margin:0 auto;
-    text-align: center;
+    text-align: right;
     clear: both;
     height: 40px;
 }
@@ -112,3 +112,4 @@ body {
     margin-right: 15px;
     font-size: 10px;
 }
+
