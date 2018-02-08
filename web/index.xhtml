@@ -43,7 +43,7 @@
                                     </h:inputText></td>
                                 <td>
                                     <h:commandButton action="pages/books?faces-redirect=true" value="#{msg.entry}" styleClass="login_button" onclick="return checkValue(this.form, '#{msg.login_required}');">
-
+                                        <f:ajax execute="@form"/>
                                     </h:commandButton>
                                 </td></tr> 
                             <tr><td colspan="3">

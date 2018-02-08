@@ -15,14 +15,21 @@ import ru.alexander.library.db.Database;
 
 @ManagedBean(eager = true)
 @ApplicationScoped
-public class GenreController implements Serializable{
+public class GenreController implements Serializable {
 
-    private ArrayList<Genre> genreList = new ArrayList<Genre>();
+    private ArrayList<Genre> genreList;
 
-    private ArrayList<Genre> getGenres() {
+    public GenreController() {
+        fillGenresAll();
+    }
+
+    private void fillGenresAll() {
         Statement stmt = null;
         ResultSet rs = null;
         Connection conn = null;
+
+        genreList = new ArrayList<Genre>();
+
         try {
             conn = Database.getConnection();
 
@@ -53,14 +60,9 @@ public class GenreController implements Serializable{
             }
         }
 
-        return genreList;
     }
 
     public ArrayList<Genre> getGenreList() {
-        if (!genreList.isEmpty()) {
-            return genreList;
-        } else {
-            return getGenres();
-        }
+        return genreList;
     }
 }

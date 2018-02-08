@@ -12,11 +12,12 @@ import ru.alexander.library.enums.SearchType;
 @RequestScoped
 public class SearchTypeController {
 
-    private Map<String, SearchType> searchList = new HashMap<>(); // хранит все виды поисков (по автору, по названию)
+    private static Map<String, SearchType> searchList = new HashMap<String, SearchType>(); // хранит все виды поисков (по автору, по названию)
 
     public SearchTypeController() {
 
         ResourceBundle bundle = ResourceBundle.getBundle("ru.alexander.library.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        searchList.clear();
         searchList.put(bundle.getString("author_name"), SearchType.AUTHOR);
         searchList.put(bundle.getString("book_name"), SearchType.TITLE);
     }

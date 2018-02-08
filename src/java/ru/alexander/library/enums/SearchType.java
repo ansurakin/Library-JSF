@@ -4,5 +4,4 @@ public enum SearchType {
 
     AUTHOR,
     TITLE
-    
 }

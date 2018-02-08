@@ -42,7 +42,7 @@ public class LoginValidator implements Validator {
     }
 
     private ArrayList<String> getTestArray() {
-        ArrayList<String> list = new ArrayList<>();// заглушка, желательно делать запрос в базу данных для проверки существующего имени
+        ArrayList<String> list = new ArrayList<String>();// заглушка, желательно делать запрос в базу данных для проверки существующего имени
         list.add("username");
         list.add("login");
         return list;

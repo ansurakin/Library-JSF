@@ -132,7 +132,6 @@ public class CheckSessionFilter implements Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
-    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
@@ -180,7 +179,6 @@ public class CheckSessionFilter implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
-     * @return 
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -198,15 +196,12 @@ public class CheckSessionFilter implements Filter {
     /**
      * Destroy method for this filter
      */
-    @Override
     public void destroy() {
     }
 
     /**
      * Init method for this filter
-     * @param filterConfig
      */
-    @Override
     public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
@@ -224,7 +219,7 @@ public class CheckSessionFilter implements Filter {
         if (filterConfig == null) {
             return ("CheckSessionFilter()");
         }
-        StringBuffer sb = new StringBuffer("CheckSessionFilter(");
+        StringBuilder sb = new StringBuilder("CheckSessionFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());

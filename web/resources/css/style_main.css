@@ -226,6 +226,11 @@ a:hover, a:active, a:focus {
     font-weight: bold
 }
 
+.col2 a.content_link img{
+    margin-right: 5px;
+
+}
+
 .col2 a.save_link{
     color: #3333ff;
     font-size: 11px;
@@ -333,6 +338,8 @@ a:hover, a:active, a:focus {
 }
 .pager .selected_page{
     color:red;
+    margin-left: 5px;
+    margin-top: 50px;   
 }
 
 .ajaxLoading { 
