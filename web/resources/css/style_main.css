@@ -363,3 +363,26 @@ a:hover, a:active, a:focus {
     float:left;
 }
 
+
+
+
+.name_edit{
+    width: 100%;
+}
+
+.publisher_edit{
+    width: 100%;
+}
+
+.date_edit{
+    width: 100%;
+}
+
+.pages_edit{
+    width: 100%;
+}
+
+.descr_edit{
+    width: 100%;
+    height: 200px;
+}
