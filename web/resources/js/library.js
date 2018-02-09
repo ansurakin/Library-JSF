@@ -20,3 +20,7 @@ function showProgress(data) {
     }
 }
 
+
+function showError(error) {
+    alert(error);
+}

@@ -374,7 +374,7 @@ a:hover, a:active, a:focus {
 }
 
 .name_edit{
-    width: 100%;
+    width: 150px;
 }
 
 .publisher_edit{
@@ -385,8 +385,9 @@ a:hover, a:active, a:focus {
     width: 100%;
 }
 
-.pages_edit{
-    width: 100%;
+.small_edit{
+    width: 100px;
+    margin-left: 10px;
 }
 
 .descr_edit{

@@ -12,11 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import ru.alexander.library.controllers.BookListController;
+import ru.alexander.library.entity.Book;
 
 @WebServlet(name = "ShowImage",
 urlPatterns = {"/ShowImage"})
 public class ShowImage extends HttpServlet {
 
+//    private static Map<Long, Byte[]> imageMap = new HashMap();
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -32,9 +34,9 @@ public class ShowImage extends HttpServlet {
         response.setContentType("image/jpeg");
         OutputStream out = response.getOutputStream();
         try {
-            int id = Integer.valueOf(request.getParameter("id"));
-            BookListController searchController = (BookListController) request.getSession(false).getAttribute("bookListController");
-            byte[] image = searchController.getImage(id);
+            int index = Integer.valueOf(request.getParameter("index"));
+            BookListController bookListController = (BookListController) request.getSession(false).getAttribute("bookListController");
+            byte[] image = ((Book)bookListController.getPager().getList().get(index)).getImage();
             response.setContentLength(image.length);
             out.write(image);
         } catch (Exception ex) {
@@ -43,6 +45,7 @@ public class ShowImage extends HttpServlet {
             out.close();
         }
     }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

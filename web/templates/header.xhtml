@@ -31,7 +31,7 @@
                 <p><h5>#{msg.welcome},  #{user.username}</h5></p>
 
                 <h:form>
-                    <h:commandLink action="#{loginController.exit()}" value="#{msg.exit}"/>
+                    <h:commandLink action="#{user.logout()}" value="#{msg.exit}"/>
                 </h:form>
             </div>
 
@@ -41,8 +41,8 @@
                     <h:inputText id="search_string" styleClass="search_string" value="#{bookListController.searchString}" valueChangeListener="#{bookListController.searchStringChanged}">
                         <f:ajax  event="change" />
                     </h:inputText>
-                    <h:commandButton value="#{msg.search}" styleClass="search_button">
-                        <f:ajax onevent="showProgress" execute="@form" render=":booksForm:booksList @form :lettersForm :pages1 :pages2 :booksCount" listener="#{bookListController.fillBooksBySearch()}"/>
+                    <h:commandButton value="#{msg.search}" styleClass="search_button" action="#{bookListController.fillBooksBySearch}">
+
                     </h:commandButton>
                 </h:form>
 
@@ -63,7 +63,7 @@
                         <h:commandLink value="#{letter}" styleClass="#{letter == bookListController.selectedLetter ? 'selected_letter':''}">
 
                             <f:param name="letter" value="#{letter}" />
-                            <f:ajax onevent="showProgress" event="click" render=":booksForm:booksList @form :lettersForm :pages1 :pages2 :booksCount" listener="#{bookListController.fillBooksByLetter()}"/>
+                            <f:ajax onevent="showProgress" event="click" render=":booksForm:admin_tools :booksForm:booksList @form :lettersForm :pages1 :pages2 :booksCount" listener="#{bookListController.fillBooksByLetter()}"/>
 
                         </h:commandLink>
 

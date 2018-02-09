@@ -113,3 +113,10 @@ body {
     font-size: 10px;
 }
 
+#loading_wrapper{
+    width: 50px;
+    position: fixed;
+    display: none;
+    vertical-align: top;
+    float: right;
+}

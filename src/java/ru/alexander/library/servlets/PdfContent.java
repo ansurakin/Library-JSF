@@ -12,7 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import ru.alexander.library.controllers.BookListController;
+import ru.alexander.library.db.DataHelper;
 
 @WebServlet(name = "PdfContent",
 urlPatterns = {"/PdfContent"})
@@ -33,12 +33,11 @@ public class PdfContent extends HttpServlet {
         response.setContentType("application/pdf");
         OutputStream out = response.getOutputStream();
         try {
-            int id = Integer.valueOf(request.getParameter("id"));
+            long id = Long.valueOf(request.getParameter("id"));
             Boolean save = Boolean.valueOf(request.getParameter("save"));
             String filename = request.getParameter("filename");
             
-            BookListController searchController = (BookListController) request.getSession(false).getAttribute("bookListController");
-            byte[] content = searchController.getContent(id);
+            byte[] content = DataHelper.getInstance().getContent(id);
             response.setContentLength(content.length);
             if (save) {
                 response.setHeader("Content-Disposition", "attachment;filename="+ URLEncoder.encode(filename,"UTF-8")+".pdf");

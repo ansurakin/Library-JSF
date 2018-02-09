@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 09.02.2018 13:40:00 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="ru.alexander.library.entity.Author" table="author" schema="public" optimistic-lock="version">
+        <id name="id" type="long">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="fio" type="string">
+            <column name="fio" length="300" not-null="true" />
+        </property>
+        <property name="birthday" type="date">
+            <column name="birthday" length="13" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -37,6 +37,7 @@ public class User implements Serializable {
         return password;
     }
     
+    
     public String login() {
         try {
             
@@ -45,10 +46,10 @@ public class User implements Serializable {
             if (request.getSession(false)!=null){
                 request.logout();
             }
-            System.out.println(username + password);
+
             request.login(username, password);
             
-            return "/pages/books.xhtml";
+            return "/pages/books.xhtml?faces-redirect=true";
         } catch (ServletException ex) {
             ResourceBundle bundle = ResourceBundle.getBundle("ru.alexander.library.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
