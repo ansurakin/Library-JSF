@@ -17,8 +17,11 @@
 
                     <h:commandLink action="#{localeChanger.changeLocale('en')}">
                         <h:graphicImage library="images" name="eng.png" title="#{msg.english}" />
+
                         <f:ajax render=":login_div :lib_title" execute="@form" disabled="#{fn:contains(request.requestURL, 'books.xhtml')}"/>
+
                         <f:ajax render="@all" execute="@form" disabled="#{not fn:contains(request.requestURL, 'books.xhtml')}"/>
+
                     </h:commandLink>
                     <h:commandLink action = "#{localeChanger.changeLocale('ru')}">
                         <h:graphicImage library="images" name="rus.png" title="#{msg.russian}"/>
@@ -28,7 +31,7 @@
 
                 </h:form>
             </div>
-
+ 
         </ui:composition>
     </h:body>
 </html>

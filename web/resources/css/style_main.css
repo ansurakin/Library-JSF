@@ -309,6 +309,7 @@ a:hover, a:active, a:focus {
     color:red;
 }
 
+
 .pdf_viewer{
     margin: 0 auto;
     width:850px;
@@ -350,13 +351,34 @@ a:hover, a:active, a:focus {
 
 }
 
+.ui-datatable.books_list .ui-datatable-data tr,
+.ui-datatable.books_list .ui-datatable-data-empty tr,
+.ui-datatable.books_list .ui-datatable-data td,
+.ui-datatable.books_list .ui-datatable-data-empty td {
+    border-style: none;
+    white-space: normal;
+    padding:0;
+    background:none;
+}
+
+.books_list table thead tr {
+    display: none;
+}
+
+.ui-datatable.books_list table{
+    border: none;
+    border-collapse: inherit;
+    
+}
+
+
 
 #loading_wrapper{
-    width: 100%;
-    display: block;
+    width: 100%;  
     text-align: center;
     position: fixed;
-    display: none;
+    display: block;
+    z-index: 1000;
 }
 
 #loading_wrapper p{
@@ -366,6 +388,7 @@ a:hover, a:active, a:focus {
     margin: 0 auto;
     font-weight: bold;
 }
+
 
 .locales{
     width: 100%;
@@ -393,4 +416,20 @@ a:hover, a:active, a:focus {
 .descr_edit{
     width: 100%;
     height: 200px;
+}
+
+
+.ui-paginator, .ui-paginator-page{
+    background: none !important;
+    border: none !important;
+}
+
+a.ui-paginator-page.ui-state-active{
+    color:red !important;
+}
+
+
+#booksForm select{
+    width:50px;
+    background: none;
 }

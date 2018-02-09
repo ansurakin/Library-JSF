@@ -168,10 +168,9 @@ public class HibernateSession implements Filter {
 
             doAfterProcessing(wrappedRequest, wrappedResponse);
 
-//            if (!path.startsWith(ResourceHandler.RESOURCE_IDENTIFIER)) {
             sessionFactory.getCurrentSession().getTransaction().commit();
+            sessionFactory.getCurrentSession().close();
             System.out.println("close session for " + wrappedRequest.getRequestURI());
-//            }
 
 
 
@@ -198,7 +197,6 @@ public class HibernateSession implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
-     * @return 
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -216,14 +214,12 @@ public class HibernateSession implements Filter {
     /**
      * Destroy method for this filter
      */
-    @Override
     public void destroy() {
     }
 
     /**
      * Init method for this filter
      */
-    @Override
     public void init(FilterConfig filterConfig) {
         sessionFactory = HibernateUtil.getSessionFactory();
         this.filterConfig = filterConfig;

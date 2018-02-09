@@ -17,6 +17,9 @@
         <session-timeout>
             30
         </session-timeout>
+        <cookie-config>
+            <name>SESSIONID</name>
+        </cookie-config>
     </session-config>
     <welcome-file-list>
         <welcome-file>index.xhtml</welcome-file>
@@ -32,6 +35,8 @@
             <description/>
             <role-name>USER</role-name>
             <role-name>ADMIN</role-name>
+            <role-name>admin</role-name>
+            <role-name>user</role-name>
         </auth-constraint>
         <user-data-constraint>
             <description/>
@@ -52,6 +57,14 @@
     <security-role>
         <description/>
         <role-name>ADMIN</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>admin</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>user</role-name>
     </security-role>
     <resource-ref>
         <res-ref-name>jdbc/Library_java</res-ref-name>

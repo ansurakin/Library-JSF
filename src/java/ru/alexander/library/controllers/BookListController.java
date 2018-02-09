@@ -2,85 +2,75 @@ package ru.alexander.library.controllers;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.ResourceBundle;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.context.RequestContext;
+import org.primefaces.model.LazyDataModel;
 import ru.alexander.library.beans.Pager;
 import ru.alexander.library.db.DataHelper;
 import ru.alexander.library.entity.Book;
 import ru.alexander.library.enums.SearchType;
+import ru.alexander.library.models.BookListDataModel;
 
 @ManagedBean(eager = true)
 @SessionScoped
-public class BookListController implements Serializable {    
+public class BookListController implements Serializable {
 
+
+    private Book selectedBook;
+    private DataHelper dataHelper = dataHelper = DataHelper.getInstance();
+    private LazyDataModel<Book> bookListModel;
     private Long selectedAuthorId;// текущий автор книги из списка при редактировании книги
     // критерии поиска
     private char selectedLetter; // выбранная буква алфавита, по умолчанию не выбрана ни одна буква
     private SearchType selectedSearchType = SearchType.TITLE;// хранит выбранный тип поиска, по-умолчанию - по названию
     private long selectedGenreId; // выбранный жанр
     private String currentSearchString; // хранит поисковую строку
-    private Pager<Book> pager = new Pager<Book>();
- 
+    private Pager pager = Pager.getInstance();
     //-------
     private boolean editModeView;// отображение режима редактирования
 
     public BookListController() {
-        fillBooksAll();
+        bookListModel = new BookListDataModel();
     }
 
-    private void submitValues(Character selectedLetter, int selectedPageNumber, long selectedGenreId) {
+    private void submitValues(Character selectedLetter, long selectedGenreId) {
         this.selectedLetter = selectedLetter;
-        pager.setSelectedPageNumber(selectedPageNumber);
         this.selectedGenreId = selectedGenreId;
     }
 
     //<editor-fold defaultstate="collapsed" desc="запросы в базу">
-    private void fillBooksAll() {
-        DataHelper.getInstance().getAllBooks(pager);
+    private void fillBooksAll() {        
+        dataHelper.getAllBooks();
     }
 
     public void fillBooksByGenre() {
         
-        cancelEditMode();
-
-        row = -1;
-
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-
         selectedGenreId = Long.valueOf(params.get("genre_id"));
-
-        submitValues(' ', 1, selectedGenreId);
-        DataHelper.getInstance().getBooksByGenre(selectedGenreId, pager);
-
-
+        submitValues(' ', selectedGenreId);
+        dataHelper.getBooksByGenre(selectedGenreId);       
+        
     }
 
+
     public void fillBooksByLetter() {
-
-        cancelEditMode();
         
-        row = -1;
-
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         selectedLetter = params.get("letter").charAt(0);
-
-        submitValues(selectedLetter, 1, -1);
-
-
-        DataHelper.getInstance().getBooksByLetter(selectedLetter, pager);
-
-
+        submitValues(selectedLetter, -1);
+        dataHelper.getBooksByLetter(selectedLetter);
+        
     }
 
     public void fillBooksBySearch() {
 
-        cancelEditMode();
-        
-        row = -1;
-
-        submitValues(' ', 1, -1);
+        submitValues(' ', -1);
 
         if (currentSearchString.trim().length() == 0) {
             fillBooksAll();
@@ -88,42 +78,54 @@ public class BookListController implements Serializable {
         }
 
         if (selectedSearchType == SearchType.AUTHOR) {
-            DataHelper.getInstance().getBooksByAuthor(currentSearchString, pager);
+            dataHelper.getBooksByAuthor(currentSearchString);
         } else if (selectedSearchType == SearchType.TITLE) {
-            DataHelper.getInstance().getBooksByName(currentSearchString, pager);
+            dataHelper.getBooksByName(currentSearchString);
         }
-
 
     }
 
-    public void updateBooks() {
+    public void updateBook() {
 
-        row = -1;
-        
-        DataHelper.getInstance().update();
-        
+        dataHelper.updateBook(selectedBook);
         cancelEditMode();
+        dataHelper.populateList();
 
-        DataHelper.getInstance().refreshList();
-        
+        RequestContext.getCurrentInstance().execute("PF('dlgEditBook').hide()");
+
+        ResourceBundle bundle = ResourceBundle.getBundle("ru.alexander.library.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(bundle.getString("updated")));
+
+       
+
     }
-    //</editor-fold>
 
+    public void deleteBook() {
+        dataHelper.deleteBook(selectedBook);
+        dataHelper.populateList();
+
+//        RequestContext.getCurrentInstance().execute("dlgDeleteBook.hide()");
+        ResourceBundle bundle = ResourceBundle.getBundle("ru.alexander.library.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(bundle.getString("deleted")));
+
+
+    }
+
+    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="режим редактирования">
-    public void showEdit() {
-        row=-1;
-        editModeView = true;
-    }
-
     public void cancelEditMode() {
-        row = -1;
         editModeView = false;
-        for (Book book : pager.getList()) {
-            book.setEdit(false);
-        }
-    }
-    //</editor-fold>
+        RequestContext.getCurrentInstance().execute("PF('dlgEditBook').hide()");
 
+    }
+
+    public void switchEditMode() {
+        editModeView = true;
+        RequestContext.getCurrentInstance().execute("PF('dlgEditBook').show()");
+
+    }
+
+    //</editor-fold>
     public Character[] getRussianLetters() {
         Character[] letters = new Character[]{'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я',};
         return letters;
@@ -136,26 +138,8 @@ public class BookListController implements Serializable {
     public void searchTypeChanged(ValueChangeEvent e) {
         selectedSearchType = (SearchType) e.getNewValue();
     }
+    
 
-    //<editor-fold defaultstate="collapsed" desc="постраничность">
-    public void changeBooksCountOnPage(ValueChangeEvent e) {
-        row = -1;
-        cancelEditMode();
-        pager.setBooksCountOnPage(Integer.valueOf(e.getNewValue().toString()).intValue());
-        pager.setSelectedPageNumber(1);
-        DataHelper.getInstance().refreshList();
-    }
-
-    public void selectPage() {
-        row = -1;
-        cancelEditMode();
-        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        pager.setSelectedPageNumber(Integer.valueOf(params.get("page_number")));
-        DataHelper.getInstance().refreshList();
-
-    }
-
-    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="гетеры сетеры">
     public boolean isEditMode() {
         return editModeView;
@@ -175,12 +159,6 @@ public class BookListController implements Serializable {
 
     public void setSearchType(SearchType searchType) {
         this.selectedSearchType = searchType;
-    }
-    private transient int row = -1;
-
-    public int getRow() {
-        row += 1;
-        return row;
     }
 
     public long getSelectedGenreId() {
@@ -210,5 +188,20 @@ public class BookListController implements Serializable {
     public Pager getPager() {
         return pager;
     }
+
+    public LazyDataModel<Book> getBookListModel() {
+        return bookListModel;
+    }
+
+    public void setSelectedBook(Book selectedBook) {
+        this.selectedBook = selectedBook;
+    }
+
+    public Book getSelectedBook() {
+        return selectedBook;
+    }
+
     //</editor-fold>
+
+   
 }
